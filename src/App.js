@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Auth, { LoginComponent, SignupComponent } from "./components/Auth/Auth";
 import UploadComponent from "./components/Upload/Upload";
 import GalleryComponent from "./components/Gallery/Gallery";
-
+import HomepageLayout from "./components/Containers/Layout";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,8 +11,7 @@ import {
   Redirect
 } from "react-router-dom";
 import "./App.css";
-import { Button } from "semantic-ui-react";
-import { useLogout, SessionContext } from "./hooks/useAuth";
+import { SessionContext } from "./hooks/useAuth";
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { state } = useContext(SessionContext);
@@ -22,7 +21,7 @@ const PrivateRoute = ({ children, ...rest }) => {
       {...rest}
       render={({ location }) =>
         state.session ? (
-          children
+          <HomepageLayout>{children}</HomepageLayout>
         ) : (
           <Redirect
             to={{
@@ -58,7 +57,7 @@ const App = () => {
           <PrivateRoute path="/upload">
             <UploadComponent />
           </PrivateRoute>
-          <PrivateRoute path="/galerry">
+          <PrivateRoute path="/gallery">
             <GalleryComponent />
           </PrivateRoute>
           <Route exact path="/">
@@ -74,23 +73,6 @@ const About = () => {
   return (
     <div className="App">
       <div>
-        <nav>
-          <Logout />
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/upload">Upload</Link>
-            </li>
-            <li>
-              <Link to="/gallery">Gallery</Link>
-            </li>
-          </ul>
-        </nav>
         <div>About</div>
       </div>
     </div>
@@ -101,33 +83,10 @@ const Home = () => {
   return (
     <div className="App">
       <div>
-        <nav>
-          <Logout />
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/upload">Upload</Link>
-            </li>
-            <li>
-              <Link to="/gallery">Gallery</Link>
-            </li>
-          </ul>
-        </nav>
         <div>Home</div>
       </div>
     </div>
   );
-};
-
-const Logout = () => {
-  const logout = useLogout();
-
-  return <Button onClick={logout}>Logout</Button>;
 };
 
 export default App;
